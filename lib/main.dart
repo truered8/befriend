@@ -6,6 +6,7 @@ import 'package:uni_links/uni_links.dart';
 
 import 'package:befriend/assets/constants.dart' as Constants;
 import 'pages/get_socials.dart';
+import 'pages/share_social.dart';
 import 'pages/social.dart';
 
 void main() {
@@ -131,9 +132,24 @@ class _MyHomePageState extends State<MyHomePage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                platformDisplay(FontAwesomeIcons.instagram, instagramId),
-                platformDisplay(FontAwesomeIcons.snapchat, snapchatId),
-                platformDisplay(FontAwesomeIcons.twitter, twitterId)
+                ShareSocial(
+                    title: widget.title,
+                    icon: FontAwesomeIcons.instagram,
+                    platform: 'Instagram',
+                    username: instagramId,
+                    prefix: Constants.INSTAGRAM_PREFIX),
+                ShareSocial(
+                    title: widget.title,
+                    icon: FontAwesomeIcons.snapchatGhost,
+                    platform: 'Snapchat',
+                    username: snapchatId,
+                    prefix: Constants.SNAPCHAT_PREFIX),
+                ShareSocial(
+                    title: widget.title,
+                    icon: FontAwesomeIcons.twitter,
+                    platform: 'Twitter',
+                    username: twitterId,
+                    prefix: Constants.TWITTER_PREFIX)
               ],
             )
           ],
@@ -143,20 +159,6 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: _shareLink,
         tooltip: 'Increment',
         child: Icon(Icons.add),
-      ),
-    );
-  }
-
-  Widget platformDisplay(IconData platform, String? id) {
-    return RichText(
-      text: TextSpan(
-        children: [
-          WidgetSpan(
-            child: FaIcon(platform),
-          ),
-          TextSpan(
-              text: " $id", style: Theme.of(context).textTheme.bodyMedium),
-        ],
       ),
     );
   }
