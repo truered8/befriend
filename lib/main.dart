@@ -1,13 +1,10 @@
-import 'package:befriend/pages/social.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:uni_links/uni_links.dart';
 
 import 'package:befriend/assets/constants.dart' as Constants;
 import 'pages/get_socials.dart';
 import 'pages/share_social.dart';
-import 'pages/social.dart';
 
 void main() {
   runApp(Befriend());
@@ -48,39 +45,20 @@ class _MyHomePageState extends State<MyHomePage> {
   String? twitterId;
 
   /// Reads each handle from disk.
-  void updateIds() {
+  void _updateIds() {
     instagramId = prefs.getString('Instagram')!;
     snapchatId = prefs.getString('Snapchat')!;
     twitterId = prefs.getString('Twitter')!;
   }
 
-  void _shareLink() async {
-    getLink();
-    setState(() {
-      List<Widget> sequence = [
-        Social(
-            title: widget.title,
-            icon: FontAwesomeIcons.instagram,
-            platform: 'Instagram',
-            username: instagramId,
-            prefix: Constants.INSTAGRAM_PREFIX),
-        Social(
-            title: widget.title,
-            icon: FontAwesomeIcons.snapchatGhost,
-            platform: 'Snapchat',
-            username: snapchatId,
-            prefix: Constants.SNAPCHAT_PREFIX),
-        Social(
-            title: widget.title,
-            icon: FontAwesomeIcons.twitter,
-            platform: 'Twitter',
-            username: twitterId,
-            prefix: Constants.TWITTER_PREFIX)
-      ];
-      for (int i = 0; i < sequence.length; i++)
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => sequence[i]));
-    });
+  /// Allows the user to input their social media links.
+  void _getSocials() async {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) =>
+              GetSocials(title: widget.title, updateIds: _updateIds)),
+    );
   }
 
   /// Runs when the app starts.
@@ -93,10 +71,10 @@ class _MyHomePageState extends State<MyHomePage> {
         context,
         MaterialPageRoute(
             builder: (context) =>
-                GetSocials(title: widget.title, updateIds: updateIds)),
+                GetSocials(title: widget.title, updateIds: _updateIds)),
       );
     } else {
-      setState(updateIds);
+      setState(_updateIds);
     }
   }
 
@@ -109,11 +87,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void dispose() {
     super.dispose();
-  }
-
-  void getLink() async {
-    final initialLink = await getInitialLink();
-    print(initialLink);
   }
 
   @override
@@ -156,9 +129,9 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _shareLink,
+        onPressed: _getSocials,
         tooltip: 'Increment',
-        child: Icon(Icons.add),
+        child: Icon(Icons.edit),
       ),
     );
   }
