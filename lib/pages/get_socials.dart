@@ -102,7 +102,7 @@ class _GetSocialsState extends State<GetSocials> {
                       widget.updateIds();
                       Navigator.pop(context);
                     },
-                    child: Text('Done'),
+                    child: Text('Save'),
                   ),
                 )
               ],

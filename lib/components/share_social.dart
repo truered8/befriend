@@ -30,21 +30,25 @@ class _ShareSocialState extends State<ShareSocial> {
     return Container(
       child: ElevatedButton(
         onPressed: shareLink,
-        child: RichText(
-          text: TextSpan(
-            children: [
-              WidgetSpan(
-                child: FaIcon(widget.icon),
-              ),
-              TextSpan(
-                text: " ${widget.username}",
-                style: TextStyle(color: Colors.white70)
-              ),
-            ],
-          ),
-        ),
+        child: Padding(
+          padding: EdgeInsets.all(8.0),
+          child: RichText(
+            text: TextSpan(
+              children: [
+                WidgetSpan(
+                  child: FaIcon(widget.icon),
+                ),
+                TextSpan(
+                  text: " ${widget.username}",
+                  style: Theme.of(context).textTheme.labelLarge!.apply(
+                    color: Color.fromARGB(220, 255, 255, 255),
+                )),
+              ],
+            ),
+            textAlign: TextAlign.start,
+          )),
       ),
-      padding: EdgeInsets.only(left: 8.0, top: 0.0, right: 8.0, bottom: 1.0),
+      padding: EdgeInsets.only(left: 16.0, top: 0.0, right: 16.0, bottom: 4.0),
       width: double.infinity,
     );
   }

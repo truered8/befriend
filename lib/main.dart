@@ -31,7 +31,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  
+
   /// The`SharedPreferences` for this app.
   late SharedPreferences prefs;
 
@@ -107,8 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: (_getNonEmptyPlatforms().length > 0 ? Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: (_getNonEmptyPlatforms().length > 0 ? ListView(
           children: <Widget>[
             Padding(
               padding: EdgeInsets.all(16.0),
@@ -118,6 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Padding(padding: EdgeInsets.all(15)),
             Column(children: _getShareSocials())
           ],
+          shrinkWrap: true,
         ) : Text('Tap the edit button to start sharing.',
                   style: Theme.of(context).textTheme.headline6))
       ),
