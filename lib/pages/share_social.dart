@@ -38,14 +38,11 @@ class _ShareSocialState extends State<ShareSocial> {
               ),
               TextSpan(
                 text: " ${widget.username}",
-                style: TextStyle(color: Colors.white70)//Theme.of(context).textTheme.bodyMedium
+                style: TextStyle(color: Colors.white70)
               ),
             ],
           ),
         ),
-      /* style: ButtonStyle(
-        minimumSize: Size.fromWidth(double.infinity)
-      ) */
       ),
       padding: EdgeInsets.only(left: 8.0, top: 0.0, right: 8.0, bottom: 1.0),
       width: double.infinity,

@@ -42,18 +42,18 @@ class _SocialState extends State<Social> {
     return Scaffold(
         appBar: AppBar(title: Text(widget.title!)),
         body: Center(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            FaIcon(widget.icon, size: 88),
-            ElevatedButton(
-                onPressed: launchPlatform,
-                child: Text(
-                  'Go to ${widget.username} on ${widget.platform}',
-                  textAlign: TextAlign.center,
-                ))
-          ],
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              FaIcon(widget.icon, size: 88),
+              ElevatedButton(
+                  onPressed: launchPlatform,
+                  child: Text(
+                    'Go to ${widget.username} on ${widget.platform}',
+                    textAlign: TextAlign.center,
+                  ))
+            ],
         )));
   }
 }
