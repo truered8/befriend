@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:befriend/assets/constants.dart' as Constants;
 import 'pages/get_socials.dart';
-import 'share_social.dart';
+import 'components/share_social.dart';
 
 void main() {
   runApp(Befriend());
@@ -31,7 +31,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  /// The [SharedPreferences] for this app.
+  
+  /// The`SharedPreferences` for this app.
   late SharedPreferences prefs;
 
   /// This user's social media ids.

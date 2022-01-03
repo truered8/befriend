@@ -14,20 +14,25 @@ class GetSocials extends StatefulWidget {
 }
 
 class _GetSocialsState extends State<GetSocials> {
-  Map<String, TextEditingController> _textControllers = Map.fromEntries(
+
+  /// `TextEditingController`s for each platform.
+  Map<String, TextEditingController> _controllers = Map.fromEntries(
     Constants.PLATFORM_TO_ICON.keys
       .map((platform) => MapEntry(platform, TextEditingController())));
-  final _formKey = GlobalKey<FormState>();
-  late SharedPreferences prefs;
-  Map<String, String> ids = Map.fromEntries(Constants.PLATFORM_TO_ICON.keys
-    .map((platform) => MapEntry(platform, '')));
 
+  /// The key for the form.
+  final _formKey = GlobalKey<FormState>();
+
+  /// The `SharedPreferences` for this app.
+  late SharedPreferences prefs;
+
+  /// Runs when the app starts.
   void startup() async {
     prefs = await SharedPreferences.getInstance();
     setState(() {
-      _textControllers.keys.forEach((platform) {
+      _controllers.keys.forEach((platform) {
         String? id = prefs.getString(platform);
-        if (id != null) _textControllers[platform]!.text = id;
+        if (id != null) _controllers[platform]!.text = id;
       });
     });
   }
@@ -40,7 +45,7 @@ class _GetSocialsState extends State<GetSocials> {
 
   @override
   void dispose() {
-    _textControllers.values.map((controller) {
+    _controllers.values.map((controller) {
       controller.dispose();
     });
     super.dispose();
@@ -51,7 +56,7 @@ class _GetSocialsState extends State<GetSocials> {
     return Container(
       margin: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
       child: TextFormField(
-        controller: _textControllers[platform],
+        controller: _controllers[platform],
         decoration: InputDecoration(
           border: OutlineInputBorder(),
           labelText: hint,
@@ -60,7 +65,6 @@ class _GetSocialsState extends State<GetSocials> {
             child: FaIcon(Constants.PLATFORM_TO_ICON[platform])),
           prefixIconColor: Colors.black,
         ),
-        onChanged: (text) => {ids[platform] = text},
       ),
     );
   }
@@ -92,11 +96,8 @@ class _GetSocialsState extends State<GetSocials> {
                   padding: EdgeInsets.only(left: 16.0, right: 16.0),
                   child: ElevatedButton(
                     onPressed: () {
-                      ids.keys.forEach((platform) {
-                        ids[platform] = _textControllers[platform]!.text;
-                      });
-                      ids.entries.forEach((entry) {
-                        prefs.setString(entry.key, entry.value);
+                      _controllers.keys.forEach((platform) {
+                        prefs.setString(platform, _controllers[platform]!.text);
                       });
                       widget.updateIds();
                       Navigator.pop(context);
