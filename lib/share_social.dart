@@ -3,26 +3,26 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:share_plus/share_plus.dart';
 
 class ShareSocial extends StatefulWidget {
-  ShareSocial(
-      {Key? key,
-      this.title,
-      this.icon,
-      this.platform,
-      this.username,
-      this.prefix})
-      : super(key: key);
-  final String? title;
-  final IconData? icon;
-  final String? platform;
-  final String? username;
-  final String? prefix;
+  ShareSocial({
+    Key? key,
+    required this.title,
+    required this.icon,
+    required this.platform,
+    required this.username,
+    required this.prefix
+  }) : super(key: key);
+  final String title;
+  final IconData icon;
+  final String platform;
+  final String username;
+  final String prefix;
   @override
   _ShareSocialState createState() => _ShareSocialState();
 }
 
 class _ShareSocialState extends State<ShareSocial> {
   void shareLink() {
-    Share.share(widget.prefix! + (widget.username!).trim());
+    Share.share(widget.prefix + (widget.username).trim());
   }
 
   @override

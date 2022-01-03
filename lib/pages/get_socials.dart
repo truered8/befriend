@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:befriend/assets/constants.dart' as Constants;
+
 class GetSocials extends StatefulWidget {
-  GetSocials({Key? key, this.title, this.updateIds}) : super(key: key);
-  final String? title;
-  final Function? updateIds;
+  GetSocials({Key? key, required this.title, required this.updateIds})
+      : super(key: key);
+  final String title;
+  final Function updateIds;
   @override
   _GetSocialsState createState() => _GetSocialsState();
 }
@@ -12,33 +16,23 @@ class GetSocials extends StatefulWidget {
 class _GetSocialsState extends State<GetSocials> {
   final _formKey = GlobalKey<FormState>();
   late SharedPreferences prefs;
-  late Map<String, String> ids = {
+  Map<String, String> ids = {
     'Instagram': '',
     'Snapchat': '',
-    'Twitter': ''
+    'Twitter': '',
+    'Linkedin': '',
+    'YouTube': '',
+    'Spotify': '',
   };
-
-  String? validate(value) {
-    if (value == null || value.isEmpty) {
-      return 'Enter some text 🤡';
-    }
-    return null;
-  }
-
-  /// Returns a text field to enter the username for `platform`.
-  Widget addTextField(String platform, String hint) {
-    return TextFormField(
-      decoration: InputDecoration(
-        border: OutlineInputBorder(),
-        hintText: hint,
-      ),
-      validator: validate,
-      onChanged: (text) => {ids[platform] = text},
-    );
-  }
 
   void startup() async {
     prefs = await SharedPreferences.getInstance();
+    setState(() {
+      ids.keys.forEach((platform) {
+        String? id = prefs.getString(platform);
+        if (id != null) ids[platform] = id;
+      });
+    });
   }
 
   @override
@@ -47,32 +41,61 @@ class _GetSocialsState extends State<GetSocials> {
     startup();
   }
 
+  /// Returns a text field to enter the username for `platform`.
+  Widget addTextField(String platform, String hint) {
+    return Container(
+      margin: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+      child: TextFormField(
+        decoration: InputDecoration(
+          border: OutlineInputBorder(),
+          labelText: hint,
+          prefixIcon: Padding(
+              padding: EdgeInsets.only(left: 9.0, top: 9.0),
+              child: FaIcon(Constants.PLATFORM_TO_ICON[platform])),
+          prefixIconColor: Colors.black,
+        ),
+        initialValue: ids[platform],
+        onChanged: (text) => {ids[platform] = text},
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.title!),
+          title: Text(widget.title),
         ),
         body: Center(
             child: Form(
                 key: _formKey,
-                child: Column(
+                child: ListView(
                   children: [
-                    addTextField('Instagram', 'Enter your Instagram username'),
-                    addTextField('Snapchat', 'Enter your Snapchat username'),
-                    addTextField('Twitter', 'Enter your Twitter username'),
-                    ElevatedButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
+                    Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Text(
+                          'Fill out whichever of the following you would like:',
+                          style: Theme.of(context).textTheme.titleSmall),
+                    ),
+                    addTextField('Instagram', 'Instagram username'),
+                    addTextField('Snapchat', 'Snapchat username'),
+                    addTextField('Twitter', 'Twitter username'),
+                    addTextField('Linkedin', 'Linkedin username'),
+                    addTextField('YouTube', 'YouTube link'),
+                    addTextField('Spotify', 'Spotify username'),
+                    Padding(
+                      padding: EdgeInsets.only(left: 16.0, right: 16.0),
+                      child: ElevatedButton(
+                        onPressed: () {
                           ids.entries.forEach((entry) {
                             prefs.setString(entry.key, entry.value);
                           });
-                          widget.updateIds!();
+                          widget.updateIds();
                           Navigator.pop(context);
-                        }
-                      },
-                      child: const Text('Submit'),
-                    ),
+                        },
+                        child: Text('Done'),
+                      ),
+                    )
                   ],
                 ))));
   }
