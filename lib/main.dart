@@ -78,14 +78,17 @@ class _MyHomePageState extends State<MyHomePage> {
     super.dispose();
   }
 
-  /// Returns the buttons for each social media platform available.
-  List<ShareSocial> _getAvailablePlatforms() {
-    List<String> nonEmptyPlatforms =
-        Constants.PLATFORM_TO_ICON.keys.where((platform) {
+  /// Returns the platforms that have been entered by the user.
+  List<String> _getNonEmptyPlatforms() {
+    return Constants.PLATFORM_TO_ICON.keys.where((platform) {
       if (ids[platform] != null && ids[platform]!.isNotEmpty) return true;
       return false;
     }).toList();
-    return nonEmptyPlatforms
+  }
+
+  /// Returns the buttons for each social media platform available.
+  List<ShareSocial> _getShareSocials() {
+    return _getNonEmptyPlatforms()
       .map((platform) => ShareSocial(
         title: widget.title,
         icon: Constants.PLATFORM_TO_ICON[platform]!,
@@ -103,7 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: Column(
+        child: (_getNonEmptyPlatforms().length > 0 ? Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Padding(
@@ -112,13 +115,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   style: Theme.of(context).textTheme.headline6),
             ),
             Padding(padding: EdgeInsets.all(15)),
-            Column(children: _getAvailablePlatforms())
+            Column(children: _getShareSocials())
           ],
-        ),
+        ) : Text('Tap the edit button to start sharing.',
+                  style: Theme.of(context).textTheme.headline6))
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _getSocials,
-        tooltip: 'Increment',
+        tooltip: 'Edit Platforms',
         child: Icon(Icons.edit),
       ),
     );

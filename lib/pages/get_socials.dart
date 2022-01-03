@@ -16,14 +16,11 @@ class GetSocials extends StatefulWidget {
 class _GetSocialsState extends State<GetSocials> {
   Map<String, TextEditingController> _textControllers = Map.fromEntries(
     Constants.PLATFORM_TO_ICON.keys
-    .map((platform) => MapEntry(platform, TextEditingController()))
-  );
+      .map((platform) => MapEntry(platform, TextEditingController())));
   final _formKey = GlobalKey<FormState>();
   late SharedPreferences prefs;
-  Map<String, String> ids = Map.fromEntries(
-    Constants.PLATFORM_TO_ICON.keys
-    .map((platform) => MapEntry(platform, ''))
-  );
+  Map<String, String> ids = Map.fromEntries(Constants.PLATFORM_TO_ICON.keys
+    .map((platform) => MapEntry(platform, '')));
 
   void startup() async {
     prefs = await SharedPreferences.getInstance();
@@ -59,8 +56,8 @@ class _GetSocialsState extends State<GetSocials> {
           border: OutlineInputBorder(),
           labelText: hint,
           prefixIcon: Padding(
-              padding: EdgeInsets.only(left: 9.0, top: 9.0),
-              child: FaIcon(Constants.PLATFORM_TO_ICON[platform])),
+            padding: EdgeInsets.only(left: 9.0, top: 9.0),
+            child: FaIcon(Constants.PLATFORM_TO_ICON[platform])),
           prefixIconColor: Colors.black,
         ),
         onChanged: (text) => {ids[platform] = text},
@@ -75,36 +72,39 @@ class _GetSocialsState extends State<GetSocials> {
           title: Text(widget.title),
         ),
         body: Center(
-            child: Form(
-                key: _formKey,
-                child: ListView(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Text(
-                          'Fill out whichever of the following you would like:',
-                          style: Theme.of(context).textTheme.titleSmall),
-                    ),
-                    addTextField('Instagram', 'Instagram username'),
-                    addTextField('Snapchat', 'Snapchat username'),
-                    addTextField('Twitter', 'Twitter username'),
-                    addTextField('Linkedin', 'Linkedin username'),
-                    addTextField('YouTube', 'YouTube link'),
-                    addTextField('Spotify', 'Spotify username'),
-                    Padding(
-                      padding: EdgeInsets.only(left: 16.0, right: 16.0),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          ids.entries.forEach((entry) {
-                            prefs.setString(entry.key, entry.value);
-                          });
-                          widget.updateIds();
-                          Navigator.pop(context);
-                        },
-                        child: Text('Done'),
-                      ),
-                    )
-                  ],
-                ))));
+          child: Form(
+            key: _formKey,
+            child: ListView(
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Text(
+                    'Fill out whichever of the following you would like:',
+                    style: Theme.of(context).textTheme.titleSmall),
+                ),
+                addTextField('Instagram', 'Instagram username'),
+                addTextField('Snapchat', 'Snapchat username'),
+                addTextField('Twitter', 'Twitter username'),
+                addTextField('Linkedin', 'Linkedin username'),
+                addTextField('YouTube', 'YouTube link'),
+                addTextField('Spotify', 'Spotify username'),
+                Padding(
+                  padding: EdgeInsets.only(left: 16.0, right: 16.0),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      ids.keys.forEach((platform) {
+                        ids[platform] = _textControllers[platform]!.text;
+                      });
+                      ids.entries.forEach((entry) {
+                        prefs.setString(entry.key, entry.value);
+                      });
+                      widget.updateIds();
+                      Navigator.pop(context);
+                    },
+                    child: Text('Done'),
+                  ),
+                )
+              ],
+            ))));
   }
 }
