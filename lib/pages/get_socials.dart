@@ -14,23 +14,23 @@ class GetSocials extends StatefulWidget {
 }
 
 class _GetSocialsState extends State<GetSocials> {
+  Map<String, TextEditingController> _textControllers = Map.fromEntries(
+    Constants.PLATFORM_TO_ICON.keys
+    .map((platform) => MapEntry(platform, TextEditingController()))
+  );
   final _formKey = GlobalKey<FormState>();
   late SharedPreferences prefs;
-  Map<String, String> ids = {
-    'Instagram': '',
-    'Snapchat': '',
-    'Twitter': '',
-    'Linkedin': '',
-    'YouTube': '',
-    'Spotify': '',
-  };
+  Map<String, String> ids = Map.fromEntries(
+    Constants.PLATFORM_TO_ICON.keys
+    .map((platform) => MapEntry(platform, ''))
+  );
 
   void startup() async {
     prefs = await SharedPreferences.getInstance();
     setState(() {
-      ids.keys.forEach((platform) {
+      _textControllers.keys.forEach((platform) {
         String? id = prefs.getString(platform);
-        if (id != null) ids[platform] = id;
+        if (id != null) _textControllers[platform]!.text = id;
       });
     });
   }
@@ -41,11 +41,20 @@ class _GetSocialsState extends State<GetSocials> {
     startup();
   }
 
+  @override
+  void dispose() {
+    _textControllers.values.map((controller) {
+      controller.dispose();
+    });
+    super.dispose();
+  }
+
   /// Returns a text field to enter the username for `platform`.
   Widget addTextField(String platform, String hint) {
     return Container(
       margin: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
       child: TextFormField(
+        controller: _textControllers[platform],
         decoration: InputDecoration(
           border: OutlineInputBorder(),
           labelText: hint,
@@ -54,7 +63,6 @@ class _GetSocialsState extends State<GetSocials> {
               child: FaIcon(Constants.PLATFORM_TO_ICON[platform])),
           prefixIconColor: Colors.black,
         ),
-        initialValue: ids[platform],
         onChanged: (text) => {ids[platform] = text},
       ),
     );

@@ -46,12 +46,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   /// Allows the user to input their social media links.
   void _getSocials() async {
-    Navigator.push(
+    await Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) =>
-              GetSocials(title: widget.title, updateIds: _updateIds)),
+        builder: (context) =>
+          GetSocials(title: widget.title, updateIds: _updateIds)),
     );
+    setState(_updateIds);
   }
 
   /// Runs when the app starts.
