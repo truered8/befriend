@@ -31,7 +31,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   /// The`SharedPreferences` for this app.
   late SharedPreferences prefs;
 
@@ -50,8 +49,8 @@ class _MyHomePageState extends State<MyHomePage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-          GetSocials(title: widget.title, updateIds: _updateIds)),
+          builder: (context) =>
+              GetSocials(title: widget.title, updateIds: _updateIds)),
     );
     setState(_updateIds);
   }
@@ -81,23 +80,27 @@ class _MyHomePageState extends State<MyHomePage> {
 
   /// Returns the platforms that have been entered by the user.
   List<String> _getNonEmptyPlatforms() {
-    return Constants.PLATFORM_TO_ICON.keys.where((platform) {
+    List<String> platforms =
+        Constants.PLATFORM_TO_ICON.keys.where((platform) {
+      if (platform.compareTo('Name') == 0) return false;
       if (ids[platform] != null && ids[platform]!.isNotEmpty) return true;
       return false;
     }).toList();
+    return platforms;
   }
 
   /// Returns the buttons for each social media platform available.
   List<ShareSocial> _getShareSocials() {
     return _getNonEmptyPlatforms()
-      .map((platform) => ShareSocial(
-        title: widget.title,
-        icon: Constants.PLATFORM_TO_ICON[platform]!,
-        platform: platform,
-        username: ids[platform]!,
-        prefix: Constants.PLATFORM_TO_PREFIX[platform]!,
-      ))
-      .toList();
+        .map((platform) => ShareSocial(
+              title: widget.title,
+              icon: Constants.PLATFORM_TO_ICON[platform]!,
+              platform: platform,
+              username: ids[platform]!,
+              prefix: Constants.PLATFORM_TO_PREFIX[platform],
+              ids: ids
+            ))
+        .toList();
   }
 
   @override
@@ -107,20 +110,21 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: (_getNonEmptyPlatforms().length > 0 ? ListView(
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Text('Tap one of the following to share it:',
-                  style: Theme.of(context).textTheme.headline6),
-            ),
-            Padding(padding: EdgeInsets.all(15)),
-            Column(children: _getShareSocials())
-          ],
-          shrinkWrap: true,
-        ) : Text('Tap the edit button to start sharing.',
-                  style: Theme.of(context).textTheme.headline6))
-      ),
+          child: (_getNonEmptyPlatforms().length > 0
+              ? ListView(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Text('Tap one of the following to share it:',
+                          style: Theme.of(context).textTheme.headline6),
+                    ),
+                    Padding(padding: EdgeInsets.all(15)),
+                    Column(children: _getShareSocials())
+                  ],
+                  shrinkWrap: true,
+                )
+              : Text('Tap the edit button to start sharing.',
+                  style: Theme.of(context).textTheme.headline6))),
       floatingActionButton: FloatingActionButton(
         onPressed: _getSocials,
         tooltip: 'Edit Platforms',
