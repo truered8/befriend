@@ -1,16 +1,6 @@
-# befriend
+# Befriend
 
-A new Flutter project.
+iOS/Android app for sharing social media handles/phone contacts. Simply enter your social media handles once, then share as many times as you want. Supports Snapchat, Instagram, Twitter, Linkedin, YouTube, Spotify, and phone number sharing.  
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## How it Works
+Befriend generates deep links to other apps and shares them using the [share_plus](https://pub.dev/packages/share_plus) package.
