@@ -6,9 +6,9 @@ const Map<String, String> PLATFORM_TO_PREFIX = {
   'Instagram': 'instagram://user?username=',
   'Snapchat': 'snapchat://add/',
   'Twitter': 'twitter://user?screen_name=',
-  'Linkedin': 'linkedin://in/saptarshibhattacherya',
+  'Linkedin': 'linkedin://in/',
   'YouTube': 'vnd.youtube://',
-  'Spotify': 'https://open.spotify.com/user/',
+  'Spotify': '',
 };
 
 /// Maps social media platforms to icons.

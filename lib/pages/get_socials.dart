@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -102,7 +101,7 @@ class _GetSocialsState extends State<GetSocials> {
                     addTextField('Twitter', 'Twitter username'),
                     addTextField('Linkedin', 'Linkedin username'),
                     addTextField('YouTube', 'YouTube link'),
-                    addTextField('Spotify', 'Spotify username'),
+                    addTextField('Spotify', 'Spotify link'),
                     Padding(
                       padding: EdgeInsets.only(left: 16.0, right: 16.0),
                       child: ElevatedButton(
