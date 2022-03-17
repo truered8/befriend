@@ -54,28 +54,40 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  /// Sets the theme accordingly.
+  void _updateTheme() {
+    Befriend.themeNotifier.value =
+        prefs.getBool('lightMode')! ? ThemeMode.light : ThemeMode.dark;
+  }
+
+  /// Toggles the theme.
+  void _toggleTheme() {
+    prefs.setBool(
+        'lightMode', Befriend.themeNotifier.value == ThemeMode.dark);
+    setState(_updateTheme);
+  }
+
   /// Allows the user to input their social media links.
   void _getSocials() async {
     await Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) =>
-              GetSocials(title: widget.title, updateIds: _updateIds, themeButton: _themeButton)),
+          builder: (context) => GetSocials(
+              title: widget.title,
+              updateIds: _updateIds,
+              themeButton: _themeButton())),
     );
     setState(_updateIds);
   }
 
   /// Button that toggles between light and dark theme.
-  IconButton _themeButton = IconButton(
-      icon: Icon(Befriend.themeNotifier.value == ThemeMode.light
-          ? Icons.dark_mode
-          : Icons.light_mode),
-      onPressed: () {
-        Befriend.themeNotifier.value =
-            Befriend.themeNotifier.value == ThemeMode.light
-                ? ThemeMode.dark
-                : ThemeMode.light;
-      });
+  IconButton _themeButton() {
+    return IconButton(
+        icon: Icon(Befriend.themeNotifier.value == ThemeMode.light
+            ? Icons.dark_mode
+            : Icons.light_mode),
+        onPressed: _toggleTheme);
+  }
 
   /// Runs when the app starts.
   void startup() async {
@@ -83,9 +95,11 @@ class _HomePageState extends State<HomePage> {
     bool? opened = prefs.getBool('opened');
     if (opened != true) {
       prefs.setBool('opened', true);
+      prefs.setBool('lightMode', true);
       _getSocials();
     } else {
       setState(_updateIds);
+      setState(_updateTheme);
     }
   }
 
@@ -129,7 +143,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
-        actions: [_themeButton],
+        actions: [_themeButton()],
       ),
       body: Center(
           child: (_getNonEmptyPlatforms().length > 0
