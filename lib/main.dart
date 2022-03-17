@@ -10,27 +10,37 @@ void main() {
 }
 
 class Befriend extends StatelessWidget {
+  static final ValueNotifier<ThemeMode> themeNotifier =
+      ValueNotifier(ThemeMode.light);
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Befriend',
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-      ),
-      home: MyHomePage(title: 'Befriend'),
-    );
+    return ValueListenableBuilder<ThemeMode>(
+        valueListenable: themeNotifier,
+        builder:
+            (BuildContext context, ThemeMode currentMode, Widget? child) {
+          return MaterialApp(
+            title: 'Befriend',
+            theme: ThemeData(
+              primarySwatch: Colors.green,
+            ),
+            darkTheme: ThemeData.dark(),
+            themeMode: currentMode,
+            home: HomePage(title: 'Befriend'),
+          );
+        });
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
+class HomePage extends StatefulWidget {
+  HomePage({Key? key, required this.title}) : super(key: key);
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _HomePageState extends State<HomePage> {
   /// The`SharedPreferences` for this app.
   late SharedPreferences prefs;
 
@@ -50,10 +60,22 @@ class _MyHomePageState extends State<MyHomePage> {
       context,
       MaterialPageRoute(
           builder: (context) =>
-              GetSocials(title: widget.title, updateIds: _updateIds)),
+              GetSocials(title: widget.title, updateIds: _updateIds, themeButton: _themeButton)),
     );
     setState(_updateIds);
   }
+
+  /// Button that toggles between light and dark theme.
+  IconButton _themeButton = IconButton(
+      icon: Icon(Befriend.themeNotifier.value == ThemeMode.light
+          ? Icons.dark_mode
+          : Icons.light_mode),
+      onPressed: () {
+        Befriend.themeNotifier.value =
+            Befriend.themeNotifier.value == ThemeMode.light
+                ? ThemeMode.dark
+                : ThemeMode.light;
+      });
 
   /// Runs when the app starts.
   void startup() async {
@@ -93,13 +115,12 @@ class _MyHomePageState extends State<MyHomePage> {
   List<ShareSocial> _getShareSocials() {
     return _getNonEmptyPlatforms()
         .map((platform) => ShareSocial(
-              title: widget.title,
-              icon: Constants.PLATFORM_TO_ICON[platform]!,
-              platform: platform,
-              username: ids[platform]!,
-              prefix: Constants.PLATFORM_TO_PREFIX[platform],
-              ids: ids
-            ))
+            title: widget.title,
+            icon: Constants.PLATFORM_TO_ICON[platform]!,
+            platform: platform,
+            username: ids[platform]!,
+            prefix: Constants.PLATFORM_TO_PREFIX[platform],
+            ids: ids))
         .toList();
   }
 
@@ -108,6 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: [_themeButton],
       ),
       body: Center(
           child: (_getNonEmptyPlatforms().length > 0

@@ -6,10 +6,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:befriend/assets/constants.dart' as Constants;
 
 class GetSocials extends StatefulWidget {
-  GetSocials({Key? key, required this.title, required this.updateIds})
+  GetSocials(
+      {Key? key,
+      required this.title,
+      required this.updateIds,
+      required this.themeButton})
       : super(key: key);
   final String title;
   final Function updateIds;
+  final IconButton themeButton;
   @override
   _GetSocialsState createState() => _GetSocialsState();
 }
@@ -57,32 +62,30 @@ class _GetSocialsState extends State<GetSocials> {
     return Container(
       margin: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
       child: TextFormField(
-        controller: _controllers[platform],
-        decoration: InputDecoration(
-          border: OutlineInputBorder(),
-          labelText: hint,
-          prefixIcon: Padding(
-            padding: EdgeInsets.only(left: 9.0, top: 9.0),
-            child: FaIcon(Constants.PLATFORM_TO_ICON[platform])),
-          prefixIconColor: Colors.black,
-        ),
-        inputFormatters: (platform.compareTo('Phone Number') == 0
-            ? [PhoneInputFormatter()]
-            : []),
-        keyboardType: Constants.PLATFORM_TO_KEYBOARD[platform],
-        textCapitalization: (platform.compareTo('Name') == 0
-            ? TextCapitalization.words
-            : TextCapitalization.none)
-      ),
+          controller: _controllers[platform],
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+            labelText: hint,
+            prefixIcon: Padding(
+                padding: EdgeInsets.only(left: 9.0, top: 9.0),
+                child: FaIcon(Constants.PLATFORM_TO_ICON[platform])),
+            prefixIconColor: Colors.black,
+          ),
+          inputFormatters: (platform.compareTo('Phone Number') == 0
+              ? [PhoneInputFormatter()]
+              : []),
+          keyboardType: Constants.PLATFORM_TO_KEYBOARD[platform],
+          textCapitalization: (platform.compareTo('Name') == 0
+              ? TextCapitalization.words
+              : TextCapitalization.none)),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-        ),
+        appBar:
+            AppBar(title: Text(widget.title), actions: [widget.themeButton]),
         body: Center(
             child: Form(
                 key: _formKey,
@@ -95,7 +98,8 @@ class _GetSocialsState extends State<GetSocials> {
                           style: Theme.of(context).textTheme.titleSmall),
                     ),
                     addTextField('Name', 'Your name'),
-                    addTextField('Phone Number', 'Phone number (with country code)'),
+                    addTextField(
+                        'Phone Number', 'Phone number (with country code)'),
                     addTextField('Instagram', 'Instagram username'),
                     addTextField('Snapchat', 'Snapchat username'),
                     addTextField('Twitter', 'Twitter username'),
