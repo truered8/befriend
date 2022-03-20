@@ -60,7 +60,8 @@ class _GetSocialsState extends State<GetSocials> {
         }
       case 'Spotify':
         final name = prefs.getString('Name');
-        return (name != null && name.isNotEmpty) ? name : 'Spotify';
+        return (name != null && name.isNotEmpty) 
+          ? name.split(' ')[0] : 'Spotify';
       default:
         return '';
     }

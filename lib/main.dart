@@ -56,6 +56,8 @@ class _HomePageState extends State<HomePage> {
     Constants.PLATFORM_TO_ICON.keys.forEach((key) {
       if (key == 'YouTube') {
         labels[key] = prefs.getString('YouTubeChannel');
+      } else if (key == 'Spotify') {
+        labels[key] = prefs.getString('SpotifyProfile');
       } else {
         labels[key] = prefs.getString(key);
       }
@@ -161,9 +163,10 @@ class _HomePageState extends State<HomePage> {
               ? ListView(
                   children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.all(16.0),
+                      padding: EdgeInsets.all(2.0),
                       child: Text('Tap one of the following to share it:',
-                          style: Theme.of(context).textTheme.headline6),
+                          style: Theme.of(context).textTheme.headline6,
+                          textAlign: TextAlign.center,),
                     ),
                     Padding(padding: EdgeInsets.all(15)),
                     Column(children: _getShareSocials())

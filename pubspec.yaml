@@ -26,6 +26,7 @@ dependencies:
   flutter_contacts: ^1.1.2
   flutter_multi_formatter: ^2.5.1
   font_awesome_flutter: ^9.2.0
+  http: ^0.13.4
   path_provider: ^2.0.8
   share_plus: ^3.0.4
   shared_preferences: ^2.0.11

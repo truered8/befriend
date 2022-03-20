@@ -60,8 +60,23 @@ class _ShareSocialState extends State<ShareSocial> {
     return Container(
       child: ElevatedButton(
         onPressed: shareInfo,
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(Theme.of(context).buttonTheme.colorScheme!.primary),
+          shadowColor: MaterialStateProperty.all(Colors.red),
+          shape: MaterialStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(25),
+            ),
+          ),
+          side: MaterialStateProperty.all(
+            const BorderSide(
+              color: Colors.limeAccent,
+              width: 3,
+            ),
+          ),
+        ),
         child: Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(16.0),
             child: RichText(
               text: TextSpan(
                 children: [
@@ -70,7 +85,7 @@ class _ShareSocialState extends State<ShareSocial> {
                   ),
                   TextSpan(
                       text: " ${widget.labels[widget.platform]!}",
-                      style: Theme.of(context).textTheme.labelLarge!.apply(
+                      style: Theme.of(context).textTheme.titleMedium!.apply(
                             color: Color.fromARGB(220, 255, 255, 255),
                           )),
                 ],
