@@ -53,14 +53,14 @@ class _GetSocialsState extends State<GetSocials> {
       case 'YouTube':
         try {
           Map<String, dynamic> response = jsonDecode(await http.read(Uri.parse(
-              'https://youtube.googleapis.com/youtube/v3/channels?part=snippet%2CcontentDetails&id=$userId&key=${Keys.youtubeAPI}')));
-
+              '${Constants.youtubeAPI}&id=$userId&key=${Keys.youtubeAPI}')));
           return response['items'][0]['snippet']['title'];
         } catch (error) {
           return 'YouTube';
         }
       case 'Spotify':
-        return '';
+        final name = prefs.getString('Name');
+        return (name != null && name.isNotEmpty) ? name : 'Spotify';
       default:
         return '';
     }
@@ -75,6 +75,10 @@ class _GetSocialsState extends State<GetSocials> {
         prefs.setString('YouTubeChannel', channelName);
         prefs.setString(
             'YouTube', _controllers[platform]!.text.split('/').last);
+      } else if (platform == 'Spotify') {
+        final profileName = await getName(platform);
+        prefs.setString('SpotifyProfile', profileName);
+        prefs.setString(platform, _controllers[platform]!.text);
       } else {
         prefs.setString(platform, _controllers[platform]!.text);
       }

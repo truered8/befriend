@@ -34,3 +34,7 @@ const Map<String, TextInputType> PLATFORM_TO_KEYBOARD = {
   'YouTube': TextInputType.text,
   'Spotify': TextInputType.text,
 };
+
+/// YouTube Data API v3 URL.
+const String youtubeAPI =
+    'https://youtube.googleapis.com/youtube/v3/channels?part=snippet%2CcontentDetails';
