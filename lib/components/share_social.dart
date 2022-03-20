@@ -11,22 +11,21 @@ class ShareSocial extends StatefulWidget {
       required this.title,
       required this.icon,
       required this.platform,
-      required this.username,
       required this.ids,
+      required this.labels,
       this.prefix})
       : super(key: key);
   final String title;
   final IconData icon;
   final String platform;
-  final String username;
   final String? prefix;
   final Map<String, String?> ids;
+  final Map<String, String?> labels;
   @override
   _ShareSocialState createState() => _ShareSocialState();
 }
 
 class _ShareSocialState extends State<ShareSocial> {
-
   /// Gets the path to the contact file.
   Future<String> get _localFile async {
     final directory = await getTemporaryDirectory();
@@ -46,13 +45,13 @@ class _ShareSocialState extends State<ShareSocial> {
       List<String> names = widget.ids['Name']!.split(' ');
       final contact = Contact()
         ..name.first = names[0]
-        ..phones = [Phone(widget.username)];
+        ..phones = [Phone(widget.ids[widget.platform]!)];
       if (names.length > 1) contact.name.last = names[1];
       await writeContact(contact.toVCard());
       final path = await _localFile;
-      Share.shareFiles([path], text: widget.username);
+      Share.shareFiles([path], text: widget.ids[widget.platform]!);
     } else {
-      Share.share(widget.prefix! + (widget.username).trim());
+      Share.share(widget.prefix! + (widget.ids[widget.platform]!).trim());
     }
   }
 
@@ -70,7 +69,7 @@ class _ShareSocialState extends State<ShareSocial> {
                     child: FaIcon(widget.icon),
                   ),
                   TextSpan(
-                      text: " ${widget.username}",
+                      text: " ${widget.labels[widget.platform]!}",
                       style: Theme.of(context).textTheme.labelLarge!.apply(
                             color: Color.fromARGB(220, 255, 255, 255),
                           )),

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:befriend/assets/constants.dart' as Constants;
+import 'package:befriend/assets/keys.dart' as Keys;
+
+import 'dart:convert';
 
 class GetSocials extends StatefulWidget {
   GetSocials(
@@ -40,6 +44,43 @@ class _GetSocialsState extends State<GetSocials> {
         if (id != null) _controllers[platform]!.text = id;
       });
     });
+  }
+
+  /// Gets the user's YouTube / Spotify channel name.
+  Future<String> getName(String platform) async {
+    final userId = _controllers[platform]!.text.split('/').last;
+    switch (platform) {
+      case 'YouTube':
+        try {
+          Map<String, dynamic> response = jsonDecode(await http.read(Uri.parse(
+              'https://youtube.googleapis.com/youtube/v3/channels?part=snippet%2CcontentDetails&id=$userId&key=${Keys.youtubeAPI}')));
+
+          return response['items'][0]['snippet']['title'];
+        } catch (error) {
+          return 'YouTube';
+        }
+      case 'Spotify':
+        return '';
+      default:
+        return '';
+    }
+  }
+
+  /// Saves the user's information.
+  void _saveInfo() async {
+    _controllers.keys.forEach((platform) async {
+      if (_controllers[platform]!.text.isEmpty) return;
+      if (platform == 'YouTube') {
+        final channelName = await getName(platform);
+        prefs.setString('YouTubeChannel', channelName);
+        prefs.setString(
+            'YouTube', _controllers[platform]!.text.split('/').last);
+      } else {
+        prefs.setString(platform, _controllers[platform]!.text);
+      }
+    });
+    widget.updateIds();
+    Navigator.pop(context);
   }
 
   @override
@@ -109,14 +150,7 @@ class _GetSocialsState extends State<GetSocials> {
                     Padding(
                       padding: EdgeInsets.only(left: 16.0, right: 16.0),
                       child: ElevatedButton(
-                        onPressed: () {
-                          _controllers.keys.forEach((platform) {
-                            prefs.setString(
-                                platform, _controllers[platform]!.text);
-                          });
-                          widget.updateIds();
-                          Navigator.pop(context);
-                        },
+                        onPressed: _saveInfo,
                         child: Text('Save'),
                       ),
                     )

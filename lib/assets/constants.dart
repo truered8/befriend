@@ -7,7 +7,7 @@ const Map<String, String> PLATFORM_TO_PREFIX = {
   'Snapchat': 'snapchat://add/',
   'Twitter': 'twitter://user?screen_name=',
   'Linkedin': 'linkedin://in/',
-  'YouTube': 'vnd.youtube://',
+  'YouTube': 'vnd.youtube://www.youtube.com/channel/',
   'Spotify': '',
 };
 

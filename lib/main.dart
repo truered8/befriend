@@ -27,6 +27,7 @@ class Befriend extends StatelessWidget {
             darkTheme: ThemeData.dark(),
             themeMode: currentMode,
             home: HomePage(title: 'Befriend'),
+            debugShowCheckedModeBanner: false,
           );
         });
   }
@@ -47,9 +48,17 @@ class _HomePageState extends State<HomePage> {
   /// This user's social media ids.
   Map<String, String?> ids = Map<String, String?>();
 
+  /// The labels for each `ShareSocial` button.
+  Map<String, String?> labels = Map<String, String?>();
+
   /// Reads each handle from disk.
   void _updateIds() {
     Constants.PLATFORM_TO_ICON.keys.forEach((key) {
+      if (key == 'YouTube') {
+        labels[key] = prefs.getString('YouTubeChannel');
+      } else {
+        labels[key] = prefs.getString(key);
+      }
       ids[key] = prefs.getString(key);
     });
   }
@@ -126,15 +135,17 @@ class _HomePageState extends State<HomePage> {
   }
 
   /// Returns the buttons for each social media platform available.
-  List<ShareSocial> _getShareSocials() {
+  List<Widget> _getShareSocials() {
     return _getNonEmptyPlatforms()
-        .map((platform) => ShareSocial(
-            title: widget.title,
-            icon: Constants.PLATFORM_TO_ICON[platform]!,
-            platform: platform,
-            username: ids[platform]!,
-            prefix: Constants.PLATFORM_TO_PREFIX[platform],
-            ids: ids))
+        .map((platform) => Container(
+            margin: EdgeInsets.fromLTRB(0, 4.0, 0, 4.0),
+            child: ShareSocial(
+                title: widget.title,
+                icon: Constants.PLATFORM_TO_ICON[platform]!,
+                platform: platform,
+                prefix: Constants.PLATFORM_TO_PREFIX[platform],
+                ids: ids,
+                labels: labels)))
         .toList();
   }
 
