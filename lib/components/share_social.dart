@@ -86,7 +86,7 @@ class _ShareSocialState extends State<ShareSocial> {
                   TextSpan(
                       text: " ${widget.labels[widget.platform]!}",
                       style: Theme.of(context).textTheme.titleMedium!.apply(
-                            color: Color.fromARGB(220, 255, 255, 255),
+                            color: Color.fromARGB(255, 255, 255, 255),
                           )),
                 ],
               ),
