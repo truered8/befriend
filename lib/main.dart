@@ -19,27 +19,31 @@ class Befriend extends StatelessWidget {
         valueListenable: themeNotifier,
         builder:
             (BuildContext context, ThemeMode currentMode, Widget? child) {
-          return MaterialApp(
-            title: 'Befriend',
-            theme: ThemeData.from(colorScheme: ColorScheme.light(
-              onSecondary: Colors.white,
-              secondary: Color.fromARGB(255, 0, 39, 234),
-              surface: Color.fromARGB(255, 0, 39, 234),
-              inverseSurface: Color.fromARGB(255, 255, 255, 255),
-            )),
-            darkTheme: ThemeData.from(colorScheme: ColorScheme.dark(
-              onPrimary: Colors.white,
-              onSecondary: Colors.white,
-              secondary: Color.fromARGB(255, 30, 30, 30),
-              background: Color.fromARGB(255, 0, 0, 0),
-              onSurface: Colors.white,
-              surface: Color.fromARGB(255, 30, 30, 30),
-              inverseSurface: Color.fromARGB(255, 30, 30, 30),
-            )),
-            themeMode: currentMode,
-            home: HomePage(title: 'Befriend'),
-            debugShowCheckedModeBanner: false,
-          );
+          return GestureDetector(
+            onTap: () {
+              FocusScope.of(context).requestFocus(new FocusNode());
+            },
+            child: MaterialApp(
+              title: 'Befriend',
+              theme: ThemeData.from(colorScheme: ColorScheme.light(
+                onSecondary: Colors.white,
+                secondary: Color.fromARGB(255, 0, 39, 234),
+                surface: Color.fromARGB(255, 0, 39, 234),
+                inverseSurface: Color.fromARGB(255, 255, 255, 255),
+              )),
+              darkTheme: ThemeData.from(colorScheme: ColorScheme.dark(
+                onPrimary: Colors.white,
+                onSecondary: Colors.white,
+                secondary: Color.fromARGB(255, 30, 30, 30),
+                background: Color.fromARGB(255, 0, 0, 0),
+                onSurface: Colors.white,
+                surface: Color.fromARGB(255, 30, 30, 30),
+                inverseSurface: Color.fromARGB(255, 65, 0, 151),
+              )),
+              themeMode: currentMode,
+              home: HomePage(title: 'Befriend'),
+              debugShowCheckedModeBanner: false,
+            ));
         });
   }
 }
