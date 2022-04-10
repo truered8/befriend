@@ -21,10 +21,21 @@ class Befriend extends StatelessWidget {
             (BuildContext context, ThemeMode currentMode, Widget? child) {
           return MaterialApp(
             title: 'Befriend',
-            theme: ThemeData(
-              primarySwatch: Colors.green,
-            ),
-            darkTheme: ThemeData.dark(),
+            theme: ThemeData.from(colorScheme: ColorScheme.light(
+              onSecondary: Colors.white,
+              secondary: Color.fromARGB(255, 0, 39, 234),
+              surface: Color.fromARGB(255, 0, 39, 234),
+              inverseSurface: Color.fromARGB(255, 255, 255, 255),
+            )),
+            darkTheme: ThemeData.from(colorScheme: ColorScheme.dark(
+              onPrimary: Colors.white,
+              onSecondary: Colors.white,
+              secondary: Color.fromARGB(255, 30, 30, 30),
+              background: Color.fromARGB(255, 0, 0, 0),
+              onSurface: Colors.white,
+              surface: Color.fromARGB(255, 30, 30, 30),
+              inverseSurface: Color.fromARGB(255, 30, 30, 30),
+            )),
             themeMode: currentMode,
             home: HomePage(title: 'Befriend'),
             debugShowCheckedModeBanner: false,
@@ -140,7 +151,7 @@ class _HomePageState extends State<HomePage> {
   List<Widget> _getShareSocials() {
     return _getNonEmptyPlatforms()
         .map((platform) => Container(
-            margin: EdgeInsets.fromLTRB(0, 4.0, 0, 4.0),
+            margin: EdgeInsets.fromLTRB(0, 5.0, 0, 5.0),
             child: ShareSocial(
                 title: widget.title,
                 icon: Constants.PLATFORM_TO_ICON[platform]!,
@@ -158,15 +169,15 @@ class _HomePageState extends State<HomePage> {
         title: Text(widget.title),
         actions: [_themeButton()],
       ),
-      body: Center(
+      body: Container(
           child: (_getNonEmptyPlatforms().length > 0
               ? ListView(
                   children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.all(2.0),
-                      child: Text('Tap one of the following to share it:',
-                          style: Theme.of(context).textTheme.headline6,
-                          textAlign: TextAlign.center,),
+                    Padding(padding: EdgeInsets.all(15)),
+                    Text(
+                      'Tap one of the following to share it:',
+                      style: Theme.of(context).textTheme.headline6,
+                      textAlign: TextAlign.center,
                     ),
                     Padding(padding: EdgeInsets.all(15)),
                     Column(children: _getShareSocials())

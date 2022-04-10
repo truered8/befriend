@@ -60,8 +60,9 @@ class _GetSocialsState extends State<GetSocials> {
         }
       case 'Spotify':
         final name = prefs.getString('Name');
-        return (name != null && name.isNotEmpty) 
-          ? name.split(' ')[0] : 'Spotify';
+        return (name != null && name.isNotEmpty)
+            ? name.split(' ')[0]
+            : 'Spotify';
       default:
         return '';
     }
@@ -70,12 +71,13 @@ class _GetSocialsState extends State<GetSocials> {
   /// Saves the user's information.
   void _saveInfo() async {
     _controllers.keys.forEach((platform) async {
-      if (_controllers[platform]!.text.isEmpty) return;
       if (platform == 'YouTube') {
-        final channelName = await getName(platform);
-        prefs.setString('YouTubeChannel', channelName);
+        if (_controllers['YouTube']!.text.isNotEmpty) {
+          final channelName = await getName(platform);
+          prefs.setString('YouTubeChannel', channelName);
+        }
         prefs.setString(
-            'YouTube', _controllers[platform]!.text.split('/').last);
+          'YouTube', _controllers[platform]!.text.split('/').last);
       } else if (platform == 'Spotify') {
         final profileName = await getName(platform);
         prefs.setString('SpotifyProfile', profileName);
@@ -113,8 +115,8 @@ class _GetSocialsState extends State<GetSocials> {
             border: OutlineInputBorder(),
             labelText: hint,
             prefixIcon: Padding(
-                padding: EdgeInsets.only(left: 9.0, top: 9.0),
-                child: FaIcon(Constants.PLATFORM_TO_ICON[platform])),
+            padding: EdgeInsets.only(left: 9.0, top: 9.0),
+            child: FaIcon(Constants.PLATFORM_TO_ICON[platform])),
             prefixIconColor: Colors.black,
           ),
           inputFormatters: (platform.compareTo('Phone Number') == 0
