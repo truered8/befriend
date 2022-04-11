@@ -41,6 +41,7 @@ class _ShareSocialState extends State<ShareSocial> {
 
   /// Shares the given information.
   void shareInfo() async {
+    final Size size = MediaQuery.of(context).size;
     if (widget.platform.compareTo('Phone Number') == 0) {
       List<String> names = widget.ids['Name']!.split(' ');
       final contact = Contact()
@@ -49,9 +50,16 @@ class _ShareSocialState extends State<ShareSocial> {
       if (names.length > 1) contact.name.last = names[1];
       await writeContact(contact.toVCard());
       final path = await _localFile;
-      Share.shareFiles([path], text: widget.ids[widget.platform]!);
+      Share.shareFiles(
+        [path], 
+        text: widget.ids[widget.platform]!,
+        sharePositionOrigin: Rect.fromLTWH(0, 0, size.width, size.height / 2),
+      );
     } else {
-      Share.share(widget.prefix! + (widget.ids[widget.platform]!).trim());
+      Share.share(
+        widget.prefix! + (widget.ids[widget.platform]!).trim(),
+        sharePositionOrigin: Rect.fromLTWH(0, 0, size.width, size.height / 2),
+      );
     }
   }
 
